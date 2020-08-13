@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MVCEntityCRUD_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="CityName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Hobby">
+          <Key>
+            <PropertyRef Name="HobbyId" />
+          </Key>
+          <Property Name="HobbyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HobbyName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="100" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="100" />
+          <Property Name="Dateofbirth" Type="datetime" />
+          <Property Name="Profilepicture" Type="nvarchar(max)" />
+          <Property Name="Age" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Gender" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Phoneno" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="UserHobbies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="HobbyId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserProducts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="Recievername" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_City_State">
+          <End Role="State" Type="Self.State" Multiplicity="0..1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_State_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="State" Type="Self.State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="State">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_City">
+          <End Role="City" Type="Self.City" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHobbies_Hobby">
+          <End Role="Hobby" Type="Self.Hobby" Multiplicity="0..1" />
+          <End Role="UserHobbies" Type="Self.UserHobbies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobby">
+              <PropertyRef Name="HobbyId" />
+            </Principal>
+            <Dependent Role="UserHobbies">
+              <PropertyRef Name="HobbyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHobbies_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserHobbies" Type="Self.UserHobbies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserHobbies">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProducts_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="UserProducts" Type="Self.UserProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="UserProducts">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProducts_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserProducts" Type="Self.UserProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProducts">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_DeleteUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GetUserList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_InsertHobbies" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="HobbyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_InsertProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="ProductId" Type="int" Mode="In" />
+          <Parameter Name="Recievername" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_InsertUpdateUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="Firstname" Type="nvarchar" Mode="In" />
+          <Parameter Name="Lastname" Type="nvarchar" Mode="In" />
+          <Parameter Name="Dateofbirth" Type="datetime" Mode="In" />
+          <Parameter Name="Profilepicture" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Age" Type="numeric" Mode="In" />
+          <Parameter Name="Gender" Type="numeric" Mode="In" />
+          <Parameter Name="CityId" Type="int" Mode="In" />
+          <Parameter Name="Address" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Phoneno" Type="numeric" Mode="In" />
+          <Parameter Name="UserScalarId" Type="int" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="MVCEntityCRUD_dbModelStoreContainer">
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hobby" EntityType="Self.Hobby" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserHobbies" EntityType="Self.UserHobbies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProducts" EntityType="Self.UserProducts" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_City_State" Association="Self.FK_City_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="City" EntitySet="City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_State_Country" Association="Self.FK_State_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="State" EntitySet="State" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_City" Association="Self.FK_User_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHobbies_Hobby" Association="Self.FK_UserHobbies_Hobby">
+            <End Role="Hobby" EntitySet="Hobby" />
+            <End Role="UserHobbies" EntitySet="UserHobbies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHobbies_User" Association="Self.FK_UserHobbies_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserHobbies" EntitySet="UserHobbies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProducts_Product" Association="Self.FK_UserProducts_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="UserProducts" EntitySet="UserProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProducts_User" Association="Self.FK_UserProducts_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProducts" EntitySet="UserProducts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MVCEntityCRUD_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="CityName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="State" Relationship="Self.FK_City_State" FromRole="City" ToRole="State" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_City" FromRole="City" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="States" Relationship="Self.FK_State_Country" FromRole="Country" ToRole="State" />
+        </EntityType>
+        <EntityType Name="Hobby">
+          <Key>
+            <PropertyRef Name="HobbyId" />
+          </Key>
+          <Property Name="HobbyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="UserHobbies" Relationship="Self.FK_UserHobbies_Hobby" FromRole="Hobby" ToRole="UserHobbies" />
+          <Property Name="HobbyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="UserProducts" Relationship="Self.FK_UserProducts_Product" FromRole="Product" ToRole="UserProducts" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="StateName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK_City_State" FromRole="State" ToRole="City" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_State_Country" FromRole="State" ToRole="Country" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Dateofbirth" Type="DateTime" Precision="3" />
+          <Property Name="Profilepicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Gender" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phoneno" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="City" Relationship="Self.FK_User_City" FromRole="User" ToRole="City" />
+          <NavigationProperty Name="UserHobbies" Relationship="Self.FK_UserHobbies_User" FromRole="User" ToRole="UserHobbies" />
+          <NavigationProperty Name="UserProducts" Relationship="Self.FK_UserProducts_User" FromRole="User" ToRole="UserProducts" />
+        </EntityType>
+        <EntityType Name="UserHobby">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="HobbyId" Type="Int32" />
+          <NavigationProperty Name="Hobby" Relationship="Self.FK_UserHobbies_Hobby" FromRole="UserHobbies" ToRole="Hobby" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserHobbies_User" FromRole="UserHobbies" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="Recievername" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_UserProducts_Product" FromRole="UserProducts" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserProducts_User" FromRole="UserProducts" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_City_State">
+          <End Role="State" Type="Self.State" Multiplicity="0..1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_City">
+          <End Role="City" Type="Self.City" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_State_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="State" Type="Self.State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="State">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHobbies_Hobby">
+          <End Role="Hobby" Type="Self.Hobby" Multiplicity="0..1" />
+          <End Role="UserHobbies" Type="Self.UserHobby" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobby">
+              <PropertyRef Name="HobbyId" />
+            </Principal>
+            <Dependent Role="UserHobbies">
+              <PropertyRef Name="HobbyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProducts_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="UserProducts" Type="Self.UserProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="UserProducts">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserHobbies_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserHobbies" Type="Self.UserHobby" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserHobbies">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProducts_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserProducts" Type="Self.UserProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProducts">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCEntityCRUD_dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="Hobbies" EntityType="Self.Hobby" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserHobbies" EntityType="Self.UserHobby" />
+          <EntitySet Name="UserProducts" EntityType="Self.UserProduct" />
+          <AssociationSet Name="FK_City_State" Association="Self.FK_City_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_City" Association="Self.FK_User_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_State_Country" Association="Self.FK_State_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="State" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHobbies_Hobby" Association="Self.FK_UserHobbies_Hobby">
+            <End Role="Hobby" EntitySet="Hobbies" />
+            <End Role="UserHobbies" EntitySet="UserHobbies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProducts_Product" Association="Self.FK_UserProducts_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="UserProducts" EntitySet="UserProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserHobbies_User" Association="Self.FK_UserHobbies_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserHobbies" EntitySet="UserHobbies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProducts_User" Association="Self.FK_UserProducts_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProducts" EntitySet="UserProducts" />
+          </AssociationSet>
+          <FunctionImport Name="Test" ReturnType="Collection(MVCEntityCRUD_dbModel.Test_Result)" />
+          <FunctionImport Name="SP_GetUserList" EntitySet="Users" ReturnType="Collection(MVCEntityCRUD_dbModel.User)" />
+          <FunctionImport Name="SP_InsertUser" ReturnType="Collection(Int32)">
+            <Parameter Name="Firstname" Mode="In" Type="String" />
+            <Parameter Name="Lastname" Mode="In" Type="String" />
+            <Parameter Name="Dateofbirth" Mode="In" Type="DateTime" />
+            <Parameter Name="Profilepicture" Mode="In" Type="String" />
+            <Parameter Name="Age" Mode="In" Type="Decimal" />
+            <Parameter Name="Gender" Mode="In" Type="Decimal" />
+            <Parameter Name="CityId" Mode="In" Type="Int32" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Phoneno" Mode="In" Type="Decimal" />
+            <Parameter Name="UserId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertHobbies">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="HobbyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertProducts">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="ProductId" Mode="In" Type="Int32" />
+            <Parameter Name="Recievername" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertUpdateUser" ReturnType="Collection(Int32)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="Firstname" Mode="In" Type="String" />
+            <Parameter Name="Lastname" Mode="In" Type="String" />
+            <Parameter Name="Dateofbirth" Mode="In" Type="DateTime" />
+            <Parameter Name="Profilepicture" Mode="In" Type="String" />
+            <Parameter Name="Age" Mode="In" Type="Decimal" />
+            <Parameter Name="Gender" Mode="In" Type="Decimal" />
+            <Parameter Name="CityId" Mode="In" Type="Int32" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Phoneno" Mode="In" Type="Decimal" />
+            <Parameter Name="UserScalarId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_DeleteUser">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Test_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Firstname" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Lastname" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="Dateofbirth" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Profilepicture" Nullable="true" />
+          <Property Type="Decimal" Name="Age" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="Gender" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="CityId" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" />
+          <Property Type="Decimal" Name="Phoneno" Nullable="true" Precision="18" Scale="0" />
+        </ComplexType>
+        <ComplexType Name="SP_GetUserList_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Firstname" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Lastname" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="Dateofbirth" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Profilepicture" Nullable="true" />
+          <Property Type="Decimal" Name="Age" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="Gender" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="CityId" Nullable="true" />
+          <Property Type="String" Name="Address" Nullable="true" />
+          <Property Type="Decimal" Name="Phoneno" Nullable="true" Precision="18" Scale="0" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MVCEntityCRUD_dbModelStoreContainer" CdmEntityContainer="MVCEntityCRUD_dbEntities">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hobbies">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.Hobby">
+              <MappingFragment StoreEntitySet="Hobby">
+                <ScalarProperty Name="HobbyName" ColumnName="HobbyName" />
+                <ScalarProperty Name="HobbyId" ColumnName="HobbyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Dateofbirth" ColumnName="Dateofbirth" />
+                <ScalarProperty Name="Profilepicture" ColumnName="Profilepicture" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phoneno" ColumnName="Phoneno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserHobbies">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.UserHobby">
+              <MappingFragment StoreEntitySet="UserHobbies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HobbyId" ColumnName="HobbyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProducts">
+            <EntityTypeMapping TypeName="MVCEntityCRUD_dbModel.UserProduct">
+              <MappingFragment StoreEntitySet="UserProducts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Recievername" ColumnName="Recievername" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetUserList" FunctionName="MVCEntityCRUD_dbModel.Store.SP_GetUserList">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_InsertHobbies" FunctionName="MVCEntityCRUD_dbModel.Store.SP_InsertHobbies" />
+          <FunctionImportMapping FunctionImportName="SP_InsertProducts" FunctionName="MVCEntityCRUD_dbModel.Store.SP_InsertProducts" />
+          <FunctionImportMapping FunctionImportName="SP_InsertUpdateUser" FunctionName="MVCEntityCRUD_dbModel.Store.SP_InsertUpdateUser" />
+          <FunctionImportMapping FunctionImportName="SP_DeleteUser" FunctionName="MVCEntityCRUD_dbModel.Store.SP_DeleteUser" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

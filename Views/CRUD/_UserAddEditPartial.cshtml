@@ -1,0 +1,237 @@
+﻿@model MVC_Entity_CRUD.Models.UserModel
+@{
+    ViewBag.Title = "_UserAddEditPartial";
+}
+    <form id="saveFoodForm" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+       
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(Model => Model.UserId, new { @id = "UserId" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Firstname, new { @id = "Firstname", htmlAttributes = new { @class = "form-control", @placeholder = "Firstname" } })
+                    @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Lastname, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Lastname, new { @id = "Lastname", htmlAttributes = new { @class = "form-control", @placeholder = "Lastname" } })
+                    @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Dateofbirth, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.TextBoxFor(m => m.Dateofbirth, new { @id = "datepicker", @class = "form-control"})*@
+                    <input class="form-control" type="text" id="datepicker" value="@Model.convertedDate">
+                    @Html.ValidationMessageFor(model => model.Dateofbirth, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Profilepicture, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control" type='file' id="imgInp" name="files" />
+                    @if (ViewBag.profilepicture != null)
+                    {
+                        <div class="fileUpload" id="filediv">
+                            <img class="profilepic" id="blah" src="@ViewBag.profilepicture" alt="your image" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="fileUpload" id="filediv" style="display: none;">
+                            <img class="profilepic" id="blah" src="#" alt="your image" />
+                        </div>
+                    }
+                    @*@Html.EditorFor(model => model.Profilepicture, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.Profilepicture, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control" type="text" id="age" value="@Model.Age" disabled>
+                    @*@Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    Male:
+                    @Html.RadioButtonFor(m => m.Gender, 1, new { @id = "Gender", htmlAttributes = new { @class = "form-control" } })
+                    Female:
+                    @Html.RadioButtonFor(m => m.Gender, 2, new { @id = "Gender", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Country: </label>
+                @*@Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.CountryId, ViewBag.CountryList as SelectList, "-- Select Country --",
+                    new { @id = "CountryId", @class = "form-control", @placeholder = "Select Country" })
+                    @Html.ValidationMessageFor(m => m.CountryId, null, new { @class = "text-danger error" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">State: </label>
+                @*@Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @if (ViewBag.StateList != null)
+                    {
+                        @Html.DropDownListFor(m => m.StateId, ViewBag.StateList as SelectList, "-- Select State --",
+                      new { @id = "StateId", @class = "form-control", @placeholder = "Select State" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.StateId, new List<SelectListItem>(), "-- Select State --",
+                                 new { @id = "StateId", @class = "form-control", @placeholder = "Select State" })
+                    }
+                    @Html.ValidationMessageFor(m => m.StateId, null, new { @class = "text-danger error" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">City: </label>
+                @*@Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @if (ViewBag.CityList != null)
+                    {
+                        @Html.DropDownListFor(m => m.CityId, ViewBag.CityList as SelectList, "-- Select City --",
+                      new { @id = "CityId", @class = "form-control", @placeholder = "Select City" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CityId, new List<SelectListItem>(), "-- Select City --",
+                                 new { @id = "CityId", @class = "form-control", @placeholder = "Select City" })
+                    }
+                    @Html.ValidationMessageFor(m => m.CityId, null, new { @class = "text-danger error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Address, new { @id = "Address", @class = "form-control", @rows = "5", @placeholder = "Address", @maxlength = "200" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2"> Hobbies</label>
+                <div style="margin-left:210px">
+                    <table id="tbl2">
+                        @for (int i = 0; i < Model.Hobbies.Count; i++)
+                        {
+                            if (i % 4 == 0)
+                            {
+                                @:
+                                <tr></tr>
+                            }
+                            <tr>
+                                <td>
+                                    @Html.CheckBoxFor(x => x.Hobbies[i].IsChecked, new { @id = "IsChecked", @class = "custom-checkbox", value = Model.Hobbies[i].HobbyId })
+                                    <label class="control-label">@Model.Hobbies[i].HobbyName</label>
+                                    @Html.HiddenFor(x => x.Hobbies[i].HobbyId, new { @id = "HobbyId" })
+                                    @Html.HiddenFor(x => x.Hobbies[i].HobbyName, new { @id = "HobbyName" })
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                @*@Html.EditorFor(model => model.Hobbies, new { @id = "hobbies", });*@
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phoneno, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phoneno, new { @id = "Phoneno", htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phoneno, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <h3 style="margin-left: 104px;">Add Products</h3> <br />
+            <div class="row" id="div1" style="margin-right: -96px;margin-left: 195px;">
+                <div class="form-group col-md-4">
+                    <label>Items</label>
+                    @Html.DropDownListFor(m => m.ProductId, ViewBag.ProductList as SelectList, "-- Select Product --",
+                    new { @id = "ProductId", @class = "form-control", @placeholder = "Select Product" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Reciever</label>
+                    @Html.TextBoxFor(m => m.Recievername, new { @id = "Reciever", @class = "form-control", @placeholder = "Reciever Name" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Price</label>
+                    @Html.TextBoxFor(m => m.Price, new { @id = "ProductPrice", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-lg-12">
+                    <button type="button" id="btnAdd" style="float: right;margin-right: 109px;" class="btn btn-sm btn-primary headerbutton waves-effect waves-light"><i class="fa fa-plus-circle"> </i> ADD</button>
+                </div>
+            </div><br />
+            <div class="row" style="margin-left: 195px;margin-right: -3px;">
+                <div class="form-group col-md-12">
+                    <table id="Producttbl" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Items</th>
+                                <th style="text-align: center;">Reciever</th>
+                                <th style="width: 259px;text-align: center;">Price</th>
+                                <th style="text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>SubTotal: <input type="text" readonly value="" name="" style="max-width: 280px;text-align: right;margin-left: 1px;" class="grdtot" /></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="cmdSubmit" value="Submit With Entity" class="btn btn-sm btn-primary" />
+                    <input type="submit" id="btnsubmit" value="Submit With EntitySP" style="margin-left: 10px;" class="btn btn-sm btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
+<script>
+    if (@Model.UserId > 0) {
+            var id = '@Model.UserId';
+            $.ajax({
+                type: 'GET',
+                url: '/Common/GetUserProductDetail',
+                data: { id: id },
+                success: function (response) {
+                    var ProductTableBody = $("#Producttbl tbody");
+                    $.each(response.data, function (i, Products) {
+
+                        var ProductId = Products.ProductId;
+                        var Product = Products.ProductName;
+                        var ProductPrice = Products.Price;
+                        var RecieverName = Products.Recievername;
+                        var Item = '<tr><td style="display:none">' + ProductId +'</td><td style="text-align: center;">' + Product + '</td><td style="text-align: center;">' + RecieverName + '</td><td class="pricecls" style="width: 259px;text-align: right;">' + ProductPrice + '</td><td style="text-align: center;"><a data-itemId="0"  class="btn btn-danger" onclick="ActRemove(this);"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>';
+                        ProductTableBody.append(Item);
+                        addsum();
+                    });
+                },
+                error: function (error) {
+                }
+            });
+    }
+</script>

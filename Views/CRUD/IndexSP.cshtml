@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MVC_Entity_CRUD.Models.User>
+@{
+    ViewBag.Title = "IndexSP";
+}
+
+<h2>User List SP</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddUser")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dateofbirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phoneno)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateofbirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phoneno)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditUser", new { id = item.UserId }) |
+                @Html.ActionLink("Delete", "DeleteUserSP", new { id = item.UserId })
+            </td>
+        </tr>
+    }
+</table>
